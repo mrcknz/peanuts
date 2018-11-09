@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+import { createNewDoable } from '../actions';
 
 /*
  TODO Consider a functional component with hooks instead of class
@@ -91,11 +92,11 @@ export class DoableForm extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  // doables:  state.doables
+  doables:  state.doables
 });
 
 const mapDispatchToProps = () => ({
-
+  createNewDoable: doable => createNewDoable(doable)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DoableForm);
