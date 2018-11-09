@@ -7,12 +7,17 @@ export class ReviewSection extends Component {
 
   // Reviewabls are Doables that need reviewing
   getReviewables = doables => {
-    return doables.map( (doable, i) => <DoableForm key={i} data={doable} />);
+    return doables.map( (doable, i) => {
+      console.log('doable: ', doable);
+      return <DoableForm key={doable.id} data={doable} />;
+    })
   }
 
   render() {
+    console.log('ReviewSection Render');
+
     return (
-      <SwipeableView>
+      <SwipeableView enableMouseEvents>
         { this.getReviewables(this.props.doables) }
       </SwipeableView>
     )

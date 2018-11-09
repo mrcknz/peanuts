@@ -63,13 +63,14 @@ export class DoableForm extends Component {
 
   state = {
     saveable: false,
-    data: this.props.data || this.defaultFormState
+    data: this.defaultFormState
   }
 
-  handleSubmit = event => {
-    event.preventDefault();
+  handleSubmit = e => {
+    e.preventDefault();
     this.props.saveDoable(this.state.data);
-    this.setState( state => ({...state, data: this.defaultFormState}));
+    if (this.props.type && this.props.type === 'quickEntry')
+      this.setState( state => ({...state, data: this.defaultFormState}));
   }
 
   handleInputChange = ({target}) => {
@@ -78,6 +79,11 @@ export class DoableForm extends Component {
       const saveable = data.doable !== '';
       return { ...state, saveable, data };
     });
+  }
+
+  componentWillMount = () => {
+    if (this.props && this.props.data)
+      this.setState( state => ({ ...state, data: {...this.state.data, ...this.props.data} }) );
   }
 
   render() {
