@@ -11,10 +11,6 @@
   box-sizing: inherit;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
 #root {
   display: flex;
   height: 100%;

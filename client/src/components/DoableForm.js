@@ -50,57 +50,59 @@ const styles = {
 
 export class DoableForm extends Component {
 
+  defaultFormState = {
+    doable: '',
+    notes: '',
+    isResult: '',
+    area: '',
+    context: '',
+    deadline: '',
+    schedule: '',
+    reminder: '',
+  }
+
   state = {
     saveable: false,
-    data: this.props.data || {
-      doable: '',
-      notes: '',
-      isResult: '',
-      area: '',
-      context: '',
-      deadline: '',
-      schedule: '',
-      reminder: '',
-    }
+    data: this.props.data || this.defaultFormState
   }
 
   handleSubmit = event => {
     event.preventDefault();
     this.props.saveDoable(this.state.data);
+    this.setState( state => ({...state, data: this.defaultFormState}));
   }
 
   handleInputChange = ({target}) => {
     this.setState( state => {
-      const data = {...state.data, [target.id]: target.value };
+      const data = {...state.data, [target.name]: target.value };
       const saveable = data.doable !== '';
       return { ...state, saveable, data };
     });
   }
 
   render() {
-    console.log(this.state);
+    const { doable, notes, area, context } = this.state.data;
 
     return (
       <Paper {...styles.paper}>
         <form noValidate {...styles.form} onSubmit={this.handleSubmit}>
           <Input
-            id="doable"
             name="doable"
             type="text"
             placeholder="what needs doing?"
             autoFocus
             fullWidth
             required
-            value={ this.state.data.doable }
+            value={ doable }
             onChange={this.handleInputChange}
             disableUnderline
             {...styles.doable }
           />
           <TextField
-            id="notes"
+            name="notes"
             label="Notes"
             fullWidth
-            value={ this.state.data.notes }
+            value={ notes }
             onChange={this.handleInputChange}
             {...styles.input}
           />
@@ -111,16 +113,16 @@ export class DoableForm extends Component {
               options={[{ label: 'Personal', value: 'personal' }, {label: 'Codeworks', value: 'codeworks' } ]}
             /> */}
             <Select
-              id="area"
+              name="area"
               label="Action Area"
-              value={ this.state.data.area }
+              value={ area }
               // onChange={this.handleChange('currency')}
               {...styles.input }
             />
             <Select
-              id="context"
+              name="context"
               label="Context"
-              value={ this.state.data.context }
+              value={ context }
               // onChange={this.handleChange('currency')}
               {...styles.input }
             />
