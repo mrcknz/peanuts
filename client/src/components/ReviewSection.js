@@ -5,19 +5,22 @@ import DoableForm from './DoableForm';
 
 export class ReviewSection extends Component {
 
+  // Reviewabls are Doables that need reviewing
+  getReviewables = doables => {
+    return doables.map( doable => <DoableForm data={doable} />);
+  }
+
   render() {
     return (
       <SwipeableView>
-        <DoableForm />
-        <DoableForm />
-        <DoableForm />
+        { this.getReviewables(this.props.doables) }
       </SwipeableView>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  // doables:  state.doables
+  doables:  state.doables
 });
 
 const mapDispatchToProps = () => ({
