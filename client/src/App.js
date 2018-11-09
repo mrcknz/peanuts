@@ -5,13 +5,22 @@ import ReviewSection from './components/ReviewSection';
 import './App.css';
 
 class App extends Component {
+
+  state = {
+    verticalSwipeProps: {}
+  }
+
+  componentDidMount () {
+    this.setState(state => ({...state, verticalSwipeProps: { index: 0 } }));
+  }
+
   render() {
     return (
-      <SwipeableView axis="y" containerStyle={{height: '100vh'}} >
+      <SwipeableView axis="y" containerStyle={{height: '100vh'}} {...this.state.verticalSwipeProps}>
         <DoableForm type="quickEntry" />
         <ReviewSection />
       </SwipeableView>
-    );
+    )
   }
 }
 
