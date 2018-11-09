@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
 import { createNewDoable } from '../actions';
 
 /*
@@ -41,11 +42,16 @@ const DoableStyles = {
 const InputStyles = {
   style: {
     margin: '8px 0',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    width: '100%'
   }
 }
 
 export class DoableForm extends Component {
+
+  state = {
+    savable: false
+  }
 
   handleSubmit = event => {
     console.log(event);
@@ -67,24 +73,51 @@ export class DoableForm extends Component {
             onChange={this.handleInputChange}
             disableUnderline
             {...DoableStyles }
-          ></Input>
+          />
           <Input
             id="notes"
             name="notes"
             placeholder="Notes"
             type="text"
             fullWidth
-            multiline
+            multiline // TODO multiline prop seems to cause rendering of multiple TextAreas that cause layout issues
             value={ this.props.data && (this.props.data.notes || "") } // * apparently necessary because otherwise the TextField will be rendered with value "undefined" or "null"
             onChange={this.handleInputChange}
             {...InputStyles }
-          ></Input>
-          <Button type="submit" variant="contained">
+          />
+          { !this.props.type &&
+            <Select
+              id="area"
+              label="Action Area"
+              value={ this.props.data && (this.props.data.area || "") }
+              // onChange={this.handleChange('currency')}
+              SelectProps={{
+                native: true,
+                // MenuProps: {
+                //   className: classes.menu,
+                // },
+              }}
+              helperText="Select area of action"
+              {...InputStyles }
+            />
+            // <Select
+            //   id="context"
+            //   select
+            //   label="Context"
+            //   value={ this.props.data && (this.props.data.context || "") }
+            //   // onChange={this.handleChange('currency')}
+            //   SelectProps={{
+            //     native: true,
+            //     // MenuProps: {
+            //     //   className: classes.menu,
+            //     // },
+            //   }}
+            //   helperText="Select area of action"
+            // />
+          }
+          <Button type="submit" variant="contained" disabled={ !this.state.savable }>
             Save
           </Button>
-          { this.props.type && this.props.type !== 'quickEntry' &&
-            <p>cool</p>
-          }
         </form>
       </Paper>
     )

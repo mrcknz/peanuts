@@ -7,7 +7,7 @@ export class ReviewSection extends Component {
 
   // Reviewabls are Doables that need reviewing
   getReviewables = doables => {
-    return doables.map( doable => <DoableForm data={doable} />);
+    return doables.map( (doable, i) => <DoableForm key={i} data={doable} />);
   }
 
   render() {
