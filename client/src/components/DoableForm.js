@@ -2,65 +2,86 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
-import { createNewDoable } from '../actions';
+// import CreatableSelect from 'react-select/lib/Creatable';
+import { saveDoable } from '../actions';
 
 /*
  TODO Consider a functional component with hooks instead of class
 */
 
-const PapersStyles = {
-  style: {
-    boxSizing: 'border-box',
-    margin: '8px',
-    padding: '8px',
-    height: 'calc(100vh - 16px)'
-  }
-}
-
-const FormStyles = {
-  style: {
-    width: 'calc(100vw - 32px)',
-    maxWidth: '800px',
-    height: '100%',
-    margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-}
-
-const DoableStyles = {
-  style: {
-    margin: '8px 0',
-    fontSize: '1.618rem'
-  }
-}
-
-const InputStyles = {
-  style: {
-    margin: '8px 0',
-    overflow: 'hidden',
-    width: '100%'
+const styles = {
+  paper: {
+    style: {
+      boxSizing: 'border-box',
+      margin: '8px',
+      padding: '8px',
+      height: 'calc(100vh - 16px)'
+    }
+  },
+  form: {
+    style: {
+      width: 'calc(100vw - 32px)',
+      maxWidth: '800px',
+      height: '100%',
+      margin: '0 auto',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  },
+  doable: {
+    style: {
+      margin: '8px 0',
+      fontSize: '1.618rem'
+    }
+  },
+  input: {
+    style: {
+      margin: '8px 0',
+      overflow: 'hidden',
+      width: '100%'
+    }
   }
 }
 
 export class DoableForm extends Component {
 
   state = {
-    savable: false
+    saveable: false,
+    data: this.props.data || {
+      doable: '',
+      notes: '',
+      isResult: '',
+      area: '',
+      context: '',
+      deadline: '',
+      schedule: '',
+      reminder: '',
+    }
   }
 
   handleSubmit = event => {
     console.log(event);
   }
 
+  handleInputChange = ({target}) => {
+    this.setState( state => {
+      const data = {...state.data, [target.id]: target.value };
+      const saveable = data.doable !== '';
+      return { ...state, saveable, data };
+    });
+  }
+
   render() {
+    console.log(this.state);
+
     return (
-      <Paper {...PapersStyles}>
-        <form noValidate {...FormStyles} onSubmit={this.handleSubmit}>
+      <Paper {...styles.paper}>
+        <form noValidate {...styles.form} onSubmit={this.handleSubmit}>
           <Input
             id="doable"
             name="doable"
@@ -69,53 +90,42 @@ export class DoableForm extends Component {
             autoFocus
             fullWidth
             required
-            value={ this.props.data && (this.props.data.doable || "") } // * apparently necessary because otherwise the TextField will be rendered with value "undefined" or "null"
+            value={ this.state.data.doable } // * apparently necessary because otherwise the TextField will be rendered with value "undefined" or "null"
             onChange={this.handleInputChange}
             disableUnderline
-            {...DoableStyles }
+            {...styles.doable }
           />
-          <Input
+          <TextField
             id="notes"
-            name="notes"
-            placeholder="Notes"
-            type="text"
+            label="Notes"
             fullWidth
-            multiline // TODO multiline prop seems to cause rendering of multiple TextAreas that cause layout issues
-            value={ this.props.data && (this.props.data.notes || "") } // * apparently necessary because otherwise the TextField will be rendered with value "undefined" or "null"
+            value={ this.state.data.notes }
             onChange={this.handleInputChange}
-            {...InputStyles }
+            {...styles.input}
           />
           { !this.props.type &&
+          <React.Fragment>
+            {/* <CreatableSelect
+              isClearable
+              options={[{ label: 'Personal', value: 'personal' }, {label: 'Codeworks', value: 'codeworks' } ]}
+            /> */}
             <Select
               id="area"
               label="Action Area"
-              value={ this.props.data && (this.props.data.area || "") }
+              value={ this.state.data.area }
               // onChange={this.handleChange('currency')}
-              SelectProps={{
-                native: true,
-                // MenuProps: {
-                //   className: classes.menu,
-                // },
-              }}
-              helperText="Select area of action"
-              {...InputStyles }
+              {...styles.input }
             />
-            // <Select
-            //   id="context"
-            //   select
-            //   label="Context"
-            //   value={ this.props.data && (this.props.data.context || "") }
-            //   // onChange={this.handleChange('currency')}
-            //   SelectProps={{
-            //     native: true,
-            //     // MenuProps: {
-            //     //   className: classes.menu,
-            //     // },
-            //   }}
-            //   helperText="Select area of action"
-            // />
+            <Select
+              id="context"
+              label="Context"
+              value={ this.state.data.context }
+              // onChange={this.handleChange('currency')}
+              {...styles.input }
+            />
+          </React.Fragment>
           }
-          <Button type="submit" variant="contained" disabled={ !this.state.savable }>
+          <Button type="submit" variant="contained" disabled={ !this.state.saveable }>
             Save
           </Button>
         </form>
@@ -124,12 +134,8 @@ export class DoableForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  doables:  state.doables
-});
-
 const mapDispatchToProps = () => ({
-  createNewDoable: doable => createNewDoable(doable)
+  saveDoable: doable => saveDoable(doable)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DoableForm);
+export default connect(null, mapDispatchToProps)(DoableForm);
