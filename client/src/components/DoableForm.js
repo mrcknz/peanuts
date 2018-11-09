@@ -65,7 +65,8 @@ export class DoableForm extends Component {
   }
 
   handleSubmit = event => {
-    console.log(event);
+    event.preventDefault();
+    this.props.saveDoable(this.state.data);
   }
 
   handleInputChange = ({target}) => {
@@ -90,7 +91,7 @@ export class DoableForm extends Component {
             autoFocus
             fullWidth
             required
-            value={ this.state.data.doable } // * apparently necessary because otherwise the TextField will be rendered with value "undefined" or "null"
+            value={ this.state.data.doable }
             onChange={this.handleInputChange}
             disableUnderline
             {...styles.doable }
@@ -134,8 +135,8 @@ export class DoableForm extends Component {
   }
 }
 
-const mapDispatchToProps = () => ({
-  saveDoable: doable => saveDoable(doable)
+const mapDispatchToProps = (dispatch) => ({
+  saveDoable: doable => dispatch(saveDoable(doable))
 });
 
 export default connect(null, mapDispatchToProps)(DoableForm);
