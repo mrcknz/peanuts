@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import EntryForm from './components/entry.form';
+import SwipeableView from 'react-swipeable-views';
+import DoableForm from './components/DoableForm';
+import ReviewSection from './components/ReviewSection';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <section id="entry" style={{ display: 'inline-block', overflow: 'scroll hidden', width: '100vw' }}>
-          <EntryForm />
-          <EntryForm />
-        </section>
-      </div>
+      <SwipeableView axis="y" containerStyle={{height: '100vh'}} >
+        <DoableForm type="quickEntry" />
+        <ReviewSection />
+      </SwipeableView>
     );
   }
 }
