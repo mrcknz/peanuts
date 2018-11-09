@@ -16,7 +16,7 @@ class App extends Component {
 
   render() {
     return (
-      <SwipeableView axis="y" containerStyle={{height: '100vh'}} {...this.state.verticalSwipeProps}>
+      <SwipeableView axis="y" enableMouseEvents {...this.state.verticalSwipeProps} containerStyle={{height: '100vh'}}>
         <DoableForm type="quickEntry" />
         <ReviewSection />
       </SwipeableView>
