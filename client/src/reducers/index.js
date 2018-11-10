@@ -4,7 +4,7 @@ const initialState = {
   doables: [
     {
       id: 0,
-      doable: 'get almond milk',
+      name: 'get almond milk',
       notes: 'http://amzn.eu/d/0KIJc45',
       isResult: false,
       area: '',
@@ -16,7 +16,7 @@ const initialState = {
     },
     {
       id: 1,
-      doable: 'rule the world',
+      name: 'rule the world',
       notes: '',
       isResult: false,
       area: '',
@@ -28,7 +28,7 @@ const initialState = {
     },
     {
       id: 2,
-      doable: 'call mom',
+      name: 'call mom',
       notes: '+41 44 761 69 49',
       isResult: false,
       area: '',
