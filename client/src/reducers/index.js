@@ -55,12 +55,6 @@ export default (state = initialState, action) => {
         ...state,
           doables
       })
-      // let doables = [...state.doables];
-      // if (action.doable.id) {
-      //   doables = doables.filter( doable => doable.id !== action.doable.id);
-      //   console.log('adsf', doables);
-      // } else action.doable['id'] = state.doables.length; // TODO get ids from server
-      // return { ...state, doables: [...doables, {...action.doable}] };
 
     default:
       return state;

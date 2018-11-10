@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
 // import CreatableSelect from 'react-select/lib/Creatable';
 import { saveDoable } from '../actions';
 
@@ -82,20 +82,28 @@ export class DoableForm extends Component {
               isClearable
               options={[{ label: 'Personal', value: 'personal' }, {label: 'Codeworks', value: 'codeworks' } ]}
             /> */}
-            <Select
-              name="area"
-              label="Action Area"
+            <NativeSelect
+              name='area'
               value={ area }
-              // onChange={this.handleChange('currency')}
+              onChange={this.handleInputChange}
               {...styles.input }
-            />
-            <Select
-              name="context"
-              label="Context"
+            >
+              <option value="" disabled>Area</option>
+              <option value="home">Home</option>
+              <option value="codeworks">Codeworks</option>
+            </NativeSelect>
+            <NativeSelect
+              name='context'
               value={ context }
-              // onChange={this.handleChange('currency')}
+              onChange={this.handleInputChange}
               {...styles.input }
-            />
+            >
+              <option value="" disabled>Context</option>
+              <option value="home">Home</option>
+              <option value="office">Office</option>
+              <option value="commute">Commute</option>
+              <option value="commute">Mobile</option>
+            </NativeSelect>
           </React.Fragment>
           }
           <Button type="submit" variant="contained" disabled={ !this.state.saveable }>
