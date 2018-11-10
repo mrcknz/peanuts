@@ -12,7 +12,7 @@ import { saveDoable } from '../actions';
 export class DoableForm extends Component {
 
   defaultFormState = {
-    doable: '',
+    name: '',
     notes: '',
     isResult: '',
     area: '',
@@ -52,21 +52,21 @@ export class DoableForm extends Component {
   }
 
   render() {
-    const { doable, notes, area, context } = this.state.data;
+    const { name, notes, area, context } = this.state.data;
 
     return (
         <form noValidate {...styles.form} onSubmit={this.handleSubmit}>
           <Input
-            name="doable"
+            name="name"
             type="text"
             placeholder="what needs doing?"
             fullWidth
             required
             autoFocus={this.props.autofocus}
-            value={ doable }
+            value={ name }
             onChange={this.handleInputChange}
             disableUnderline
-            {...styles.doable }
+            {...styles.name }
           />
           <TextField
             name="notes"
@@ -128,7 +128,7 @@ const styles = {
       boxSizing: 'border-box'
     }
   },
-  doable: {
+  name: {
     style: {
       margin: '8px 0',
       fontSize: '1.618rem'
