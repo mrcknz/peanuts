@@ -13,13 +13,13 @@ export function ReviewSection (props) {
 
   return (
     <SwipeableView enableMouseEvents>
-      { renderReviewables(props.doables) }
+      { renderReviewables(props.reviewables) }
     </SwipeableView>
   )
 }
 
 const mapStateToProps = (state) => ({
-  doables:  state.doables
+  reviewables:  state.doables.filter( doable => doable.area === '')
 });
 
 const mapDispatchToProps = () => ({
