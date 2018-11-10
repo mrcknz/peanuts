@@ -19,7 +19,7 @@ const initialState = {
       name: 'rule the world',
       notes: '',
       isResult: false,
-      area: '',
+      area: 'codeworks',
       context: '',
       deadline: '',
       schedule: '',
