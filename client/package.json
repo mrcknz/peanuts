@@ -5,6 +5,7 @@
   "homepage": "https://mrcknz.github.io/peanuts/",
   "dependencies": {
     "@material-ui/core": "^3.4.0",
+    "@mobiscroll/react": "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-4.4.2.tgz",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-redux": "^5.1.0",
