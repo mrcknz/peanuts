@@ -1,5 +1,11 @@
 import React from 'react';
 
-const Doable = ({item}) => console.log(item.name) || <li data-id={item.id}>{item.name}</li>;
+const handleTouchMove = e => {
+  e.stopPropagation();
+  // console.log('li',e.type);
+  // [...e.touches, ...e.targetTouches].forEach( target => target.stopPropagation() );
+}
+
+const Doable = ({item}) => <li data-id={item.id} onTouchMove={handleTouchMove}>{item.name}</li>;
 
 export default Doable;
