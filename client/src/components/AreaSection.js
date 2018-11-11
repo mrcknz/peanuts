@@ -5,27 +5,26 @@ import { virtualize } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
 import Area from './Area';
 
-export function AreaSection (props) {
-  const renderAreas = ({doables, areas}) => {
+export function AreaSection ({areas}) {
+  const Areas = (areas) => {
     return [...areas].map( area => <Area
       key={area}
-      doables={doables.filter( doable => doable.area === area )}
+      area={area}
     />);
   }
 
 
   return (
     <SwipeableView enableMouseEvents>
-      { renderAreas(props) }
+      { Areas(areas) }
     </SwipeableView>
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   areas: new Set(state.doables.map( doable => doable.area ).filter( area => !!area)),
-  doables: state.doables
 });
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(AreaSection);

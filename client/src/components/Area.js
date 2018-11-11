@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 export function Area (props) {
 
@@ -29,4 +30,13 @@ const styles = {
   }
 }
 
-export default Area;
+const mapStateToProps = state => state;
+
+const mapDispatchToProps = dispatch => ({});
+
+const mergeProps = (state, actions, ownProps) => ({
+  area: ownProps.area,
+  doables: state.doables.filter( doable => doable.area === ownProps.area)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Area);
