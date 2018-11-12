@@ -3,7 +3,7 @@
   "name": "It's peanuts!",
   "icons": [
     {
-      "src": "\/assets\/android-chrome-144x144.png",
+      "src": "peanuts\/assets\/android-chrome-144x144.png",
       "sizes": "144x144",
       "type": "image/png"
     }
