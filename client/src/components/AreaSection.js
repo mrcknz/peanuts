@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SwipeableView from 'react-swipeable-views';
 import { MobileStepper } from '@material-ui/core';
-import { virtualize } from 'react-swipeable-views-utils';  // TODO text virtualize to solve destruction of empty SwipeableViews
-import { mod } from 'react-swipeable-views-core';
+// import { virtualize } from 'react-swipeable-views-utils';  // TODO text virtualize to solve destruction of empty SwipeableViews
+// import { mod } from 'react-swipeable-views-core';
 import Area from './Area';
 
 export class AreaSection extends Component {
