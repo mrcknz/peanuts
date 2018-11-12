@@ -6,10 +6,6 @@ import Doable from './Doable';
 
 export function Area (props) {
 
-  const handleTouchMove = e => {
-    console.log('FormGrouch touchMove',e);
-  }
-
   const stages = {
     left: [
       {
@@ -45,22 +41,12 @@ export function Area (props) {
           });
         },
         undo: true
-      },
-      {
-        percent: -10,
-        icon: 'folder',
-        color: 'lightblue',
-        action: function () {
-          mobiscroll.toast({
-              message: 'Move'
-          });
-        }
       }
     ]
   }
 
-  return <mobiscroll.Form theme="material" lang="de" onTouchMove={handleTouchMove}>
-    <mobiscroll.FormGroup {...styles.container} onTouchMove={handleTouchMove}>
+  return <mobiscroll.Form theme="material" lang="de" {...styles.forms}>
+    <mobiscroll.FormGroup {...styles.container}>
         <mobiscroll.FormGroupTitle>{props.area}</mobiscroll.FormGroupTitle>
         <mobiscroll.Listview
             theme="material"
@@ -70,6 +56,10 @@ export function Area (props) {
             sortable={{handle: 'left'}}
             stages={stages}
             undoText="Undo"
+            onSortStart={props.disableSwiping}
+            onSortEnd={props.enableSwiping}
+            onSlideStart={props.disableSwiping}
+            onSlideEnd={props.enableSwiping}
         />
     </mobiscroll.FormGroup>
     </mobiscroll.Form>;
@@ -80,7 +70,9 @@ const styles = {
     style: {
       maxWidth: '800px',
       height: '100vh',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      backgroundColor: 'white',
+      margin: '0'
     }
   }
 }
@@ -90,7 +82,8 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({});
 
 const mergeProps = (state, actions, ownProps) => ({
-  area: ownProps.area,
+  ...ownProps,
+  area: state.areas[ownProps.area].name,
   doables: state.doables.filter( doable => doable.area === ownProps.area)
 })
 

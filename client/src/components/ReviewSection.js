@@ -7,8 +7,8 @@ export function ReviewSection (props) {
 
   // Reviewabls are Doables that need reviewing
   const renderReviewables = doables => {
-    return doables.map( (doable, i) =>
-      <DoableForm key={doable.id} data={doable} /> );
+    return doables.map( (doable) =>
+      <DoableForm key={doable.id} doableId={doable.id} /> );
   }
 
   return (

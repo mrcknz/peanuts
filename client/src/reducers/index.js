@@ -38,7 +38,26 @@ const initialState = {
       reminder: '',
       createdAt: Date.now()
     }
-  ]
+  ],
+  areas: {
+    codeworks: {
+      name: 'Codeworks'
+    },
+    personal: {
+      name: 'Personal'
+    }
+  },
+  contexts: {
+    codeworks: {
+      name: 'Codeworks'
+    },
+    home: {
+      name: 'Home'
+    },
+    commute: {
+      name: 'Commute'
+    }
+  }
 }
 
 export default (state = initialState, action) => {

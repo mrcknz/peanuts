@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import NativeSelect from '@material-ui/core/NativeSelect';
-// import CreatableSelect from 'react-select/lib/Creatable';
+import CreatableSelect from 'react-select/lib/Creatable';
+import { toast } from '@mobiscroll/react';
 import { saveDoable } from '../actions';
+import { debounce } from '../utils';
 
-// TODO Consider a functional component with hooks instead of class
+// TODO generate select options dynamically
 
 export class DoableForm extends Component {
 
@@ -27,28 +28,65 @@ export class DoableForm extends Component {
     data: this.defaultFormState
   }
 
+  // TODO figure out better way to handle local UI state
+  componentWillMount = () => {
+    if (!this.props.isQuickEntry)
+      this.setState( state => ({ ...state, data: {...this.state.data, ...this.props.data} }) );
+  }
+
   handleSubmit = e => {
     e.preventDefault();
-    this.props.saveDoable(this.state.data);
+    this.undebouncedSave(this.state.data)
     this.setState( state => {
-      if (this.props.type && this.props.type === 'quickEntry') {
+      if ('quickEntry' in this.props) {
         return {...state, data: this.defaultFormState, saveable: false}
       }
       else return {...state, saveable: false}
     });
   }
 
+  showToast = (msg, target) => {
+    toast({
+      message: msg,
+      duration: 1000
+    });
+  }
+
+  undebouncedSave = (doable, target) => {
+    this.props.saveDoable(doable);
+    this.showToast('Saved!'); // TODO prevent toast from stealing focus (or bring it back)
+  }
+
+  save = debounce(this.undebouncedSave, 250);
+
   handleInputChange = ({target}) => {
+    const data = { ...this.state.data, [target.name]: target.value };
+    const saveable = data.doable !== '';
+    if (!this.props.quickEntry && saveable) {
+      this.save(data, target);
+    }
     this.setState( state => {
-      const data = {...state.data, [target.name]: target.value };
-      const saveable = data.doable !== '';
       return { ...state, saveable, data };
     });
   }
 
-  componentWillMount = () => {
-    if (this.props && this.props.data)
-      this.setState( state => ({ ...state, data: {...this.state.data, ...this.props.data} }) );
+  handleSelectChange = ({value}, targetName) => {
+    const data = {...this.state.data, [targetName]: value };
+    if (!this.props.quickEntry) {
+      this.save(data);
+      this.showToast('Saved!');
+    }
+    this.setState( state => {
+      return { ...state, data };
+    });
+  }
+
+  handleContextChange = (newValue) => {
+    this.handleSelectChange(newValue, 'context');
+  }
+
+  handleAreaChange = (newValue) => {
+    this.handleSelectChange(newValue, 'area');
   }
 
   render() {
@@ -76,39 +114,28 @@ export class DoableForm extends Component {
             onChange={this.handleInputChange}
             {...styles.input}
           />
-          { !this.props.type &&
+          { !this.props.quickEntry &&
           <React.Fragment>
-            {/* <CreatableSelect
+            <CreatableSelect
+              isSearchable
+              styles={styles.reactSelect}
+              options={Object.entries(this.props.areas).map( entries => ({ value: entries[0], label: entries[1].name }) )}
+              value={ area ? { label: this.props.areas[area].name, value: area } : ''}
+              onChange={this.handleAreaChange}
+            />
+            <CreatableSelect
               isClearable
-              options={[{ label: 'Personal', value: 'personal' }, {label: 'Codeworks', value: 'codeworks' } ]}
-            /> */}
-            <NativeSelect
-              name='area'
-              value={ area }
-              onChange={this.handleInputChange}
-              {...styles.input }
-            >
-              <option value="" disabled>Area</option>
-              <option value="home">Home</option>
-              <option value="codeworks">Codeworks</option>
-            </NativeSelect>
-            <NativeSelect
-              name='context'
-              value={ context }
-              onChange={this.handleInputChange}
-              {...styles.input }
-            >
-              <option value="" disabled>Context</option>
-              <option value="home">Home</option>
-              <option value="office">Office</option>
-              <option value="commute">Commute</option>
-              <option value="commute">Mobile</option>
-            </NativeSelect>
+              isSearchable
+              styles={styles.reactSelect}
+              options={Object.entries(this.props.contexts).map( entries => ({ value: entries[0], label: entries[1].name }) )}
+              value={ context ? { label: this.props.contexts[context].name, value: context } : ''}
+              onChange={this.handleContextChange}
+            />
           </React.Fragment>
           }
-          <Button type="submit" variant="contained" disabled={ !this.state.saveable }>
+          { this.props.quickEntry && <Button type="submit" variant="contained" disabled={ !this.state.saveable }>
             Save
-          </Button>
+          </Button>}
         </form>
     )
   }
@@ -138,13 +165,27 @@ const styles = {
     style: {
       margin: '8px 0',
       overflow: 'hidden',
-      width: '100%'
+      width: '100%',
+      position: 'relative'
     }
+  },
+  reactSelect: {
+    container: () => ({
+      position: 'relative',
+      width: '100%',
+      margin: '8px 0'
+    })
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   saveDoable: doable => dispatch(saveDoable(doable))
 });
 
-export default connect(null, mapDispatchToProps)(DoableForm);
+const mapStateToProps = (state, ownProps) => ({
+    areas: state.areas,
+    contexts: state.contexts,
+    data: state.doables.find( doable => doable.id === ownProps.doableId )
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DoableForm);
