@@ -5,10 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CreatableSelect from 'react-select/lib/Creatable';
 import { toast } from '@mobiscroll/react';
-import { saveDoable } from '../actions';
+import { saveDoable, createOption } from '../actions';
 import { debounce } from '../utils';
-
-// TODO generate select options dynamically
 
 export class DoableForm extends Component {
 
@@ -61,7 +59,7 @@ export class DoableForm extends Component {
 
   handleInputChange = ({target}) => {
     const data = { ...this.state.data, [target.name]: target.value };
-    const saveable = data.doable !== '';
+    const saveable = data.name !== '';
     if (!this.props.quickEntry && saveable) {
       this.save(data, target);
     }
@@ -87,6 +85,20 @@ export class DoableForm extends Component {
 
   handleAreaChange = (newValue) => {
     this.handleSelectChange(newValue, 'area');
+  }
+
+  handleCreateOption = (label, type) => {
+    const value = label.replace(/\W/g,'').toLowerCase();
+    this.props.createOption({[value]: {name: label}}, type);
+    this.handleSelectChange({value}, type);
+  }
+
+  handleCreateOptionArea = (label) => {
+    this.handleCreateOption(label, 'area');
+  }
+
+  handleCreateOptionContext = (label) => {
+    this.handleCreateOption(label, 'context');
   }
 
   render() {
@@ -120,17 +132,20 @@ export class DoableForm extends Component {
               isClearable
               isSearchable
               styles={styles.reactSelect}
+              options={Object.entries(this.props.contexts).map( entries => ({ value: entries[0], label: entries[1].name }) )}
+              value={ context ? { label: this.props.contexts[context].name, value: context } : '' }
+              onChange={this.handleContextChange}
+              onCreateOption={this.handleCreateOptionContext}
+              placeholder={'Select Context...'}
+            />
+            <CreatableSelect
+              isSearchable
+              styles={styles.reactSelect}
               options={Object.entries(this.props.areas).map( entries => ({ value: entries[0], label: entries[1].name }) )}
               value={ area ? { label: this.props.areas[area].name, value: area } : ''}
               onChange={this.handleAreaChange}
-            />
-            <CreatableSelect
-              isClearable
-              isSearchable
-              styles={styles.reactSelect}
-              options={Object.entries(this.props.contexts).map( entries => ({ value: entries[0], label: entries[1].name }) )}
-              value={ context ? { label: this.props.contexts[context].name, value: context } : ''}
-              onChange={this.handleContextChange}
+              onCreateOption={this.handleCreateOptionArea}
+              placeholder={'Select Area...'}
             />
           </React.Fragment>
           }
@@ -180,7 +195,8 @@ const styles = {
 }
 
 const mapDispatchToProps = dispatch => ({
-  saveDoable: doable => dispatch(saveDoable(doable))
+  saveDoable: doable => dispatch(saveDoable(doable)),
+  createOption: (label, type) => dispatch(createOption(label, type))
 });
 
 const mapStateToProps = (state, ownProps) => ({

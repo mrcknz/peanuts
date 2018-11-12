@@ -19,7 +19,7 @@ const initialState = {
       name: 'rule the world',
       notes: '',
       isResult: false,
-      area: 'codeworks',
+      area: 'personal',
       context: '',
       deadline: '',
       schedule: '',
@@ -40,16 +40,13 @@ const initialState = {
     }
   ],
   areas: {
-    codeworks: {
-      name: 'Codeworks'
-    },
     personal: {
       name: 'Personal'
     }
   },
   contexts: {
     codeworks: {
-      name: 'Codeworks'
+      name: 'Office'
     },
     home: {
       name: 'Home'
@@ -77,6 +74,10 @@ export default (state = initialState, action) => {
 
     case actionTypes.COMPLETE_DOABLE:
       return ({...state, doables: state.doables.map( doable => doable.id !== +action.id ? doable : {...doable, status: 'complete'})});
+
+    case actionTypes.CREATE_OPTION:
+      const {option, type} = action.data;
+      return {...state, [`${type}s`]: {...state[`${type}s`], ...option} };
 
     default:
       return state;

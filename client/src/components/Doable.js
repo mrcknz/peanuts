@@ -1,19 +1,20 @@
 import React from 'react';
 
-const handleTouchMove = e => {
-  e.stopPropagation();
-  // console.log('li',e.type);
-  // [...e.touches, ...e.targetTouches].forEach( target => target.stopPropagation() );
+const Doable = ({item}) => {
+  const {id, name, status} = item;
+  return <li data-id={id} {...styles(status)}>{name}</li>;
 }
 
-const Doable = ({item}) => <li data-id={item.id} onTouchMove={handleTouchMove} {...styles.li}>{item.name}</li>;
+const styles = status => {
+  switch (status) {
 
-const styles = {
-  li: {
+    default:
+      return {
     style: {
       backgroundColor: 'white'
     }
   }
+}
 }
 
 export default Doable;
