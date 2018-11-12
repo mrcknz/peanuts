@@ -7,14 +7,21 @@ const Doable = ({item}) => {
 
 const styles = status => {
   switch (status) {
+    case 'complete':
+      return {
+        style: {
+          backgroundColor: 'lightgreen',
+          color: '#888'
+        }
+      }
 
     default:
       return {
-    style: {
-      backgroundColor: 'white'
-    }
+        style: {
+          backgroundColor: 'white'
+        }
+      }
   }
-}
 }
 
 export default Doable;

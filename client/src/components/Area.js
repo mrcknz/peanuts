@@ -88,7 +88,7 @@ const mapDispatchToProps = dispatch => ({
 const mergeProps = (state, actions, ownProps) => ({
   ...ownProps,
   area: state.areas[ownProps.area].name,
-  doables: state.doables.filter( doable => doable.area === ownProps.area && doable.status !== 'complete'),
+  doables: state.doables.filter( doable => doable.area === ownProps.area ),
   ...actions
 })
 

@@ -1,21 +1,56 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SwipeableView from 'react-swipeable-views';
 import DoableForm from './DoableForm';
+import MobileStepper from '@material-ui/core/MobileStepper';
 
-export function ReviewSection (props) {
+export class ReviewSection extends Component {
+
+  state = {
+    pageIndex: 0
+  }
 
   // Reviewabls are Doables that need reviewing
-  const renderReviewables = reviewables => {
+  renderReviewables = reviewables => {
     return reviewables.map( (reviewable) =>
       <DoableForm key={reviewable.id} doableId={reviewable.id} /> );
   }
 
-  return (
-    <SwipeableView enableMouseEvents>
-      { renderReviewables(props.reviewables) }
-    </SwipeableView>
-  )
+  handleChangeIndex = index => {
+    this.setState({pageIndex: index})
+  }
+
+  render () {
+    return (
+      <div {...styles.container}>
+        <SwipeableView enableMouseEvents onChangeIndex={this.handleChangeIndex}>
+          { this.renderReviewables(this.props.reviewables) }
+        </SwipeableView>
+        {this.props.reviewables.length > 1 && <MobileStepper
+          steps={this.props.reviewables.length}
+          position="static"
+          activeStep={this.state.pageIndex}
+          {...styles.stepper}
+        />}
+      </div>
+    )
+  }
+}
+
+const styles = {
+  stepper: {
+    style: {
+      width: '100%',
+      position: 'absolute',
+      bottom: 0,
+      justifyContent: 'center'
+    }
+  },
+  container: {
+    style: {
+      position: 'relative'
+    }
+  }
 }
 
 const mapStateToProps = (state) => ({
