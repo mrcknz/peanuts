@@ -75,6 +75,9 @@ export default (state = initialState, action) => {
           doables
       })
 
+    case actionTypes.COMPLETE_DOABLE:
+      return ({...state, doables: state.doables.map( doable => doable.id !== +action.id ? doable : {...doable, status: 'complete'})});
+
     default:
       return state;
   }

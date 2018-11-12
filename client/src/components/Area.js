@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import mobiscroll from '@mobiscroll/react';
 import '@mobiscroll/react/dist/css/mobiscroll.min.css';
+import { completeDoable } from '../actions';
 import Doable from './Doable';
 
 export function Area (props) {
 
-  const stages = {
+  const getStages = () => ({
     left: [
       {
         percent: 10,
@@ -22,12 +23,12 @@ export function Area (props) {
         percent: 40,
         icon: 'checkmark',
         color: 'green',
-        action: function () {
+        action: function ({target}) {
+          props.completeDoable(target.getAttribute('data-id'))
           mobiscroll.toast({
               message: 'Done'
           });
-        },
-        undo: true
+        }
       }
     ],
     right: [
@@ -35,7 +36,8 @@ export function Area (props) {
         percent: -40,
         icon: 'remove',
         color: 'red',
-        action: function () {
+        action: function ({target}, inst) {
+          inst.remove(target);
           mobiscroll.toast({
               message: 'Deleted'
           });
@@ -43,7 +45,7 @@ export function Area (props) {
         undo: true
       }
     ]
-  }
+  });
 
   return <mobiscroll.Form theme="material" lang="de" {...styles.forms}>
     <mobiscroll.FormGroup {...styles.container}>
@@ -54,7 +56,7 @@ export function Area (props) {
             itemType={Doable}
             data={props.doables}
             sortable={{handle: 'left'}}
-            stages={stages}
+            stages={getStages()}
             undoText="Undo"
             onSortStart={props.disableSwiping}
             onSortEnd={props.enableSwiping}
@@ -79,12 +81,15 @@ const styles = {
 
 const mapStateToProps = state => state;
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  completeDoable: id => dispatch(completeDoable(id))
+});
 
 const mergeProps = (state, actions, ownProps) => ({
   ...ownProps,
   area: state.areas[ownProps.area].name,
-  doables: state.doables.filter( doable => doable.area === ownProps.area)
+  doables: state.doables.filter( doable => doable.area === ownProps.area && doable.status !== 'complete'),
+  ...actions
 })
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Area);

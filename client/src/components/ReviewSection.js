@@ -6,9 +6,9 @@ import DoableForm from './DoableForm';
 export function ReviewSection (props) {
 
   // Reviewabls are Doables that need reviewing
-  const renderReviewables = doables => {
-    return doables.map( (doable) =>
-      <DoableForm key={doable.id} doableId={doable.id} /> );
+  const renderReviewables = reviewables => {
+    return reviewables.map( (reviewable) =>
+      <DoableForm key={reviewable.id} doableId={reviewable.id} /> );
   }
 
   return (

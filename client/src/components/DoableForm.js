@@ -117,6 +117,7 @@ export class DoableForm extends Component {
           { !this.props.quickEntry &&
           <React.Fragment>
             <CreatableSelect
+              isClearable
               isSearchable
               styles={styles.reactSelect}
               options={Object.entries(this.props.areas).map( entries => ({ value: entries[0], label: entries[1].name }) )}
