@@ -1,0 +1,14 @@
+{
+    "name": "peanuts",
+    "short_name": "peanuts",
+    "icons": [
+        {
+            "src": "/android-chrome-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#dbb076",
+    "background_color": "#dbb076",
+    "display": "standalone"
+}
