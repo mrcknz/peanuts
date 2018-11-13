@@ -12,15 +12,15 @@ self.__precacheManifest = [
     "url": "/peanuts/static/js/runtime~main.1b1808fe.js"
   },
   {
-    "revision": "0af7d288e3c75058ae17",
-    "url": "/peanuts/static/js/main.0af7d288.chunk.js"
+    "revision": "21b5a711a36495f5e6d1",
+    "url": "/peanuts/static/js/main.21b5a711.chunk.js"
   },
   {
     "revision": "8999dd60a55be121c133",
     "url": "/peanuts/static/js/1.8999dd60.chunk.js"
   },
   {
-    "revision": "0af7d288e3c75058ae17",
+    "revision": "21b5a711a36495f5e6d1",
     "url": "/peanuts/static/css/main.a5e529f6.chunk.css"
   },
   {
@@ -28,7 +28,7 @@ self.__precacheManifest = [
     "url": "/peanuts/static/css/1.6b96a241.chunk.css"
   },
   {
-    "revision": "5a31716209e165170252ccbc7b854b43",
+    "revision": "ff9d6895d189b42d478595b3c75bdbc7",
     "url": "/peanuts/index.html"
   }
 ];
